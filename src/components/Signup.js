@@ -1,3 +1,4 @@
+// src/components/Signup.js
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -20,12 +21,11 @@ function Signup() {
       if (data.success) {
         navigate("/login");
       } else {
-        // Handle signup errors here
         alert(data.message);
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to fetch");
+      alert("Failed to signup");
     }
   };
 

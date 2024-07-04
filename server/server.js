@@ -1,3 +1,5 @@
+const express = require("express");
+const path = require("path");
 const http = require("http");
 const socketIo = require("socket.io");
 const app = require("./app"); // Import the configured Express app
@@ -11,16 +13,13 @@ const io = socketIo(server, {
   },
 });
 
-io.on("connection", (socket) => {
-  console.log("New client connected");
+const chatController = require("./controllers/chatController"); // Import chatController
+chatController(io); // Initialize chatController with socket.io instance
 
-  socket.on("sendMessage", (message) => {
-    io.emit("message", message);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
+// Serve the React app
+app.use(express.static(path.join(__dirname, "../build")));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../build", "index.html"));
 });
 
 server.listen(5000, () => console.log("Server running on port 5000"));
